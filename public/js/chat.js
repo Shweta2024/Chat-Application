@@ -9,6 +9,7 @@ const messages = document.querySelector("#messages");
 
 //templates
 const messageTemplate = document.querySelector("#message-template").innerHTML;
+const locationTemplate = document.querySelector("#location-template").innerHTML;
 
 // client receives message from server
 socket.on("message", function (message,callback) {
@@ -17,6 +18,15 @@ socket.on("message", function (message,callback) {
         newMessage: message
     });
     messages.insertAdjacentHTML("beforeend",html);
+});
+
+//clients receives location from the server
+socket.on("locationMessage", function (url) {
+    console.log(url);
+    const html = Mustache.render(locationTemplate, {
+        locationURL : url
+    });
+    messages.insertAdjacentHTML("beforeend", html);
 });
 
 //gets the message from the client

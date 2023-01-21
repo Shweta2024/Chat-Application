@@ -31,7 +31,7 @@ io.on("connection", function (socket) {
     //recieves location from a client
     socket.on("sendLocation", function (coordiantes,callback) {
         //sends location to all the clients
-        io.emit("message", `https://google.com/maps?q=${coordiantes.latitude},${coordiantes.longitude}`);
+        io.emit("locationMessage", `https://google.com/maps?q=${coordiantes.latitude},${coordiantes.longitude}`);
         callback();
     });
     
