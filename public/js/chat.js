@@ -74,4 +74,10 @@ locationButton.addEventListener("click", function (event) {
 });
 
 //sends the {username,room} to the server
-socket.emit("join", { username, room });
+socket.emit("join", { username, room }, function (error) {
+    //direct user back to the join page
+    if (error) {
+        alert(error);
+        location.href = "/";
+    }
+});
