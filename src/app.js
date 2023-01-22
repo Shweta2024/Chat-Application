@@ -8,7 +8,7 @@ const { addUser, removeUser, getUser, getUsersInRoom } = require(__dirname+"/uti
 const server = http.createServer(app)
 const io = socketio(server)
 
-const port = 5000 || process.env.PORT;
+const port = process.env.PORT || 5000;
 
 app.use(express.static("public"));
 
