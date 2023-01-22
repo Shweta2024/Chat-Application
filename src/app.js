@@ -30,6 +30,11 @@ io.on("connection", function (socket) {
         //server sends message to everyone except the one who joined
         socket.broadcast.to(user.room).emit("message", generateMessage("Admin",`${username} has joined!`));
 
+        io.to(room).emit("roomData", {
+            room: room,
+            users: getUsersInRoom(room)
+        });
+
         callback();
     });
 
@@ -57,9 +62,14 @@ io.on("connection", function (socket) {
     socket.on("disconnect", function () {
         const user = removeUser(socket.id);
 
-        if (user)
-            io.to(user.room).emit("message", generateMessage("Admin",`${user.username} has left!`));
+        if (user) {
+            io.to(user.room).emit("message", generateMessage("Admin", `${user.username} has left!`));
         
+            io.to(user.room).emit("roomData", {
+                room: user.room,
+                users: getUsersInRoom(user.room)
+            });
+        }
     });
     
 });

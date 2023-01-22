@@ -6,17 +6,18 @@ const messageFormInput = document.querySelector("input");
 const messageFormButton = document.querySelector("#message-btn");
 const locationButton = document.querySelector("#send-location");
 const messages = document.querySelector("#messages");
+const sidebar = document.querySelector("#sidebar");
 
 //templates
 const messageTemplate = document.querySelector("#message-template").innerHTML;
 const locationTemplate = document.querySelector("#location-template").innerHTML;
+const sidebarTemplate = document.querySelector("#sidebar-template").innerHTML;
 
 //parse
 const { username, room } = Qs.parse(location.search, {ignoreQueryPrefix : true});
 
 // client receives message from server
 socket.on("message", function (message,callback) {
-    console.log(message);
     const html = Mustache.render(messageTemplate, {
         username: message.username,
         text: message.text,
@@ -27,13 +28,22 @@ socket.on("message", function (message,callback) {
 
 //clients receives location from the server
 socket.on("locationMessage", function (message) {
-    console.log(message.url);
     const html = Mustache.render(locationTemplate, {
         username: message.username,
         locationURL: message.url,
         createdAt: moment(message.createdAt).format("h:mm a")
     });
     messages.insertAdjacentHTML("beforeend", html);
+});
+
+// receives room datas from server
+socket.on("roomData", function ({ room, users }) {
+    const html = Mustache.render(sidebarTemplate, {
+        room: room,
+        users: users
+    });
+
+    sidebar.innerHTML = html;
 });
 
 //gets the message from the client
@@ -53,7 +63,6 @@ messageForm.addEventListener("submit", function (event) {
         console.log("Message sent successfully!");
     });
 });
-
 
 //sends location to the server
 locationButton.addEventListener("click", function (event) {
@@ -83,3 +92,4 @@ socket.emit("join", { username, room }, function (error) {
         location.href = "/";
     }
 });
+
