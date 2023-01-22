@@ -25,26 +25,30 @@ io.on("connection", function (socket) {
         socket.join(user.room);
 
         //server sends message to a new client
-        socket.emit("message", generateMessage("Welcome!"));
+        socket.emit("message", generateMessage("Admin","Welcome!"));
 
         //server sends message to everyone except the one who joined
-        socket.broadcast.to(user.room).emit("message", generateMessage(`${username} has joined!`));
+        socket.broadcast.to(user.room).emit("message", generateMessage("Admin",`${username} has joined!`));
 
         callback();
     });
 
     //receives message from a client
-    socket.on("sendMessage", function (message,callback) {
+    socket.on("sendMessage", function (message, callback) {
+        const user = getUser(socket.id);
+
         //sends message to all the clients
-        io.emit("message", generateMessage(message));
+        io.to(user.room).emit("message", generateMessage(user.username,message));
         callback();
     });
 
 
     //recieves location from a client
-    socket.on("sendLocation", function (coordiantes,callback) {
+    socket.on("sendLocation", function (coordiantes, callback) {
+        const user = getUser(socket.id);
+
         //sends location to all the clients
-        io.emit("locationMessage", generateLocation(`https://google.com/maps?q=${coordiantes.latitude},${coordiantes.longitude}`));
+        io.to(user.room).emit("locationMessage", generateLocation(user.username,`https://google.com/maps?q=${coordiantes.latitude},${coordiantes.longitude}`));
         callback();
     });
     
@@ -54,7 +58,7 @@ io.on("connection", function (socket) {
         const user = removeUser(socket.id);
 
         if (user)
-            io.to(user.room).emit("message", generateMessage(`${user.username} has left!`));
+            io.to(user.room).emit("message", generateMessage("Admin",`${user.username} has left!`));
         
     });
     
