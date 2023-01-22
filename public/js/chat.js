@@ -15,16 +15,18 @@ const locationTemplate = document.querySelector("#location-template").innerHTML;
 socket.on("message", function (message,callback) {
     console.log(message);
     const html = Mustache.render(messageTemplate, {
-        newMessage: message
+        text: message.text,
+        createdAt: moment(message.createdAt).format("h:mm a")
     });
     messages.insertAdjacentHTML("beforeend",html);
 });
 
 //clients receives location from the server
-socket.on("locationMessage", function (url) {
-    console.log(url);
+socket.on("locationMessage", function (message) {
+    console.log(message.url);
     const html = Mustache.render(locationTemplate, {
-        locationURL : url
+        locationURL: message.url,
+        createdAt: moment(message.createdAt).format("h:mm a")
     });
     messages.insertAdjacentHTML("beforeend", html);
 });
