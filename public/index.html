@@ -3,32 +3,52 @@
     <head>
         <meta charset="utf-8">
         <title>Chat-App</title>
+        <link rel="icon" href="img/favicon.png">
+        <link rel="stylesheet" href="css/styles.css">
     </head>
 
     <body>
-        <h1>Chat-App</h1>
+        
+        <div class="chat">
+            <div class="chat__sidebar"></div>
+            
+            <div class="chat__main">
+                <div id="messages" class="chat__messages"></div>
+            
+                <div class="compose">
+                    <!--message-->
+                    <form id="message-form">
+                        <input type="text" name="message">
+                        <button type="submit" id="message-btn">send</button>
+                    </form>
+            
+                    <!--location-->
+                    <button id="send-location">Share Location</button>
+                </div>
+            </div>
+        </div>
+        
 
-        <div id="messages"></div>
-
-        <!--message-->
-        <form id="message-form">
-            <input type="text" name="message">
-            <button type="submit" id="message-btn">send</button>
-        </form>
-
-        <!--location-->
-        <button id="send-location">Share Location</button>
+        
 
         <!--templates-->
         <script id="message-template" type="text/html">
-            <div>
-                <p>{{createdAt}} - {{text}}</p>
+            <div class="message">
+                <p>
+                    <span class="message__name">User name</span>
+                    <span class="message__meta">{{createdAt}}</span>
+                </p>
+                <p>{{text}}</p>
             </div>
         </script>
 
         <script id="location-template" type="text/html">
-            <div>
-                <p>{{createdAt}} - <a href="{{locationURL}}" target="_blank">My current location</a></p>
+            <div class="message">
+                <p>
+                    <span class="message__name">User name</span>
+                    <span class="message__meta">{{createdAt}}</span>
+                </p>
+                <p><a href="{{locationURL}}" target="_blank">My current location</a></p>
             </div>
         </script>
 
