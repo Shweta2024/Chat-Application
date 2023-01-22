@@ -15,11 +15,15 @@ app.use(express.static("public"));
 io.on("connection", function (socket) {
     console.log("new websocket connection!");
 
-    //server sends message to new client
-    socket.emit("message", generateMessage("Welcome!"));
-    
-    //server sends message to everyone except the one who joined
-    socket.broadcast.emit("message", generateMessage("A new user has joined!"));
+    socket.on("join", function ({ username, room }) {
+        socket.join(room);//join a given room
+
+        //server sends message to new client
+        socket.emit("message", generateMessage("Welcome!"));
+
+        //server sends message to everyone except the one who joined
+        socket.broadcast.to(room).emit("message", generateMessage(`${username} has joined!`));
+    });
 
     //receives message from a client
     socket.on("sendMessage", function (message,callback) {
@@ -36,9 +40,6 @@ io.on("connection", function (socket) {
         callback();
     });
     
-
-
-
 
     //sends message to everyone, when someone leaves
     socket.on("disconnect", function () {

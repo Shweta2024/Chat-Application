@@ -11,6 +11,9 @@ const messages = document.querySelector("#messages");
 const messageTemplate = document.querySelector("#message-template").innerHTML;
 const locationTemplate = document.querySelector("#location-template").innerHTML;
 
+//parse
+const { username, room } = Qs.parse(location.search, {ignoreQueryPrefix : true});
+
 // client receives message from server
 socket.on("message", function (message,callback) {
     console.log(message);
@@ -69,3 +72,6 @@ locationButton.addEventListener("click", function (event) {
         });
     });
 });
+
+//sends the {username,room} to the server
+socket.emit("join", { username, room });
