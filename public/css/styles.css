@@ -181,3 +181,10 @@ button:disabled {
     font-weight: 300;
     padding: 12px 24px 0 24px;
 }
+
+footer{
+    background-color: #333744;
+    padding-bottom: 30px;
+    color:#eeeeee;
+    text-align: center;
+}
