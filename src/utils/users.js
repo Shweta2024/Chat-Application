@@ -1,4 +1,4 @@
-//addUser, removeUser
+//addUser, removeUser, getUser, getUsersInRoom
 
 const users = [];
 
@@ -18,7 +18,7 @@ const addUser = ({ id, username, room }) => {
     //check for existing user
     const existingUser = users.find((user) => {
         return user.username === username && user.room === room;
-    })
+    });
 
     //if already a user exists in the same room with same username, then show an error
     if (existingUser) {
@@ -33,18 +33,30 @@ const addUser = ({ id, username, room }) => {
     return {
         user: user
     }
-}
+};
 
-const removeuser = ((id) => {
+const removeuser = (id) => {
     const index = users.findIndex((user) => {
         return user.id === id
-    })
+    });
 
     //user found, so remove it
     if (index !== -1) {
         return users.splice(index, 1)[0];
     }
-})
+};
+
+const getUser = (id) => {
+    return users.find((user) => {
+        return user.id === id;
+    });
+}
+
+const getUsersInRoom = (room) => {
+    return users.filter((user) => {
+        return user.room === room;
+    })
+}
 
 //for testing purpose
 const u1 = { id: 1, username: "shweta", room: "ss"};
@@ -63,9 +75,17 @@ addUser({ id: 1, username: "shweta", room: "ss" })
 addUser({ id: 2, username: "abc", room: "ss" })
 addUser({ id: 3, username: "def", room: "ss" })
 addUser({ id: 4, username: "ghi", room: "ss" })
+
+addUser({ id: 3, username: "def", room: "aa" })
+addUser({ id: 4, username: "ghi", room: "aa" })
 console.log(users);
 
-console.log(removeuser(1));
-console.log(removeuser(2));
+// console.log(removeuser(1));
+// console.log(removeuser(2));
 
-console.log(users);
+// console.log(users);
+
+// const user = getUser(4);
+// console.log(user);
+
+// console.log(getUsersInRoom("aa"));
